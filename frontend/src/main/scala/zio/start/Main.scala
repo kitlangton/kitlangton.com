@@ -20,7 +20,7 @@ object Main {
       val appContainer = dom.document.querySelector("#app")
       appContainer.innerHTML = ""
       unmount()
-      val rootNode = render(appContainer, ZioStartView.body)
+      val rootNode = render(appContainer, PrimaryPage.body)
       storeUnmount(rootNode)
     }
 
