@@ -1,5 +1,5 @@
-name        := "zio-start"
-description := "A wizard for generating new ZIO applications."
+name        := "kitlangton.com"
+description := "Kit's website"
 version     := "0.0.1"
 
 val animusVersion    = "0.1.15"
