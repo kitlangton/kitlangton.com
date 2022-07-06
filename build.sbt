@@ -17,7 +17,7 @@ val sharedSettings = Seq(
   libraryDependencies ++= Seq(
     "io.suzaku" %%% "boopickle" % boopickleVersion
   ),
-  scalacOptions ++= Seq("-Ymacro-annotations", "-Xfatal-warnings", "-deprecation"),
+  scalacOptions ++= Seq("-Ymacro-annotations", "-Xfatal-warnings", "-deprecation", "-feature"),
   scalaVersion   := "2.13.8",
   testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
 )

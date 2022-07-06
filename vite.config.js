@@ -1,5 +1,5 @@
 import {resolve} from 'path'
-import {minifyHtml, injectHtml} from 'vite-plugin-html'
+import {createHtmlPlugin} from 'vite-plugin-html'
 
 const scalaVersion = '2.13'
 // const scalaVersion = '3.0.0-RC3'
@@ -21,10 +21,12 @@ export default ({mode}) => {
         },
         publicDir: './frontend/src/main/static/public',
         plugins: [
-            ...(process.env.NODE_ENV === 'production' ? [minifyHtml(),] : []),
-            injectHtml({
-                injectData: {
-                    script
+            createHtmlPlugin({
+                minify: mode === 'production',
+                inject: {
+                    data: {
+                        script
+                    }
                 }
             })
         ],
