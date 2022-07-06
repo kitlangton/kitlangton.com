@@ -10,6 +10,7 @@ final case class Horizontal(views: List[View], spacing: Int = 0) extends View {
 
   def body: HtmlElement =
     div(
+      // stretch
       cls("flex items-center"),
       views.zipWithIndex.map { case (view, idx) =>
         view.amend(

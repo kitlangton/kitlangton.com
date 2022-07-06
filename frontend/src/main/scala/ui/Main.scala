@@ -1,6 +1,7 @@
 package ui
 
 import animus._
+import com.raquo.laminar.api.L
 import com.raquo.laminar.api.L._
 import components.Component
 
@@ -41,33 +42,64 @@ object Main extends Component {
             "Search for apps and commands...".color(Color.Stone.`500`)
           )
           .padding(12),
-        wrap(
-          div(
-            cls("h-px w-full bg-gray-500")
+        wrap(div(cls("h-px w-full bg-gray-500"))),
+        View
+          .vertical(
+            CommandsAndSuggestion,
+            CommandMenu.absolute(bottom = Some(0), right = Some(0))
           )
+          .relative
+          .padding(12)
+      )
+      .width(600)
+      //        .blur(80)
+      .background(Color.Stone.`900`.withAlpha(0.95))
+      .border(1, "gray", 8)
+      .shadow(BoxShadow.lg)
+      .center
+
+  private def CommandMenu =
+    View
+      .horizontal(
+        "Open Command"
+          .fontSize(FontSize.sm)
+          .medium
+          .padding(12, 3),
+        View(
+          div(L.height("30px"), L.width("1px"), cls("bg-gray-500"))
         ),
+        ">_"
+          .padding(12, 3)
+          .fontMono
+          .fontSize(FontSize.xs)
+          .medium
+      )
+      .background(Color.Stone.`700`)
+      .border(1, Color.Stone.`500`.css, 6)
+
+  private def CommandsAndSuggestion =
+    View
+      .vertical(
         View
           .vertical(
             View
               .text("Suggestions")
               .medium
               .fontSize(FontSize.xs)
-              .padding(bottom = 6)
+              .padding(top = 12, bottom = 6)
               .color(Color.Stone.`400`)
               .left(4),
-            row(true, "Toggle Floating Notes", "Floating Notes"),
-            row(name = "Store", subtitle = "Raycast", alias = Some("st")),
+            row(false, "Toggle Floating Notes", "Floating Notes"),
+            row(true, name = "Store", subtitle = "Raycast", alias = Some("st")),
             row(name = "Open Typefully", subtitle = "Typefully")
-          )
-          .padding(12)
-          .padding(top = 8),
+          ),
         View
           .vertical(
             View
               .text("Commands")
               .medium
               .fontSize(FontSize.xs)
-              .padding(bottom = 6)
+              .padding(top = 12, bottom = 6)
               .color(Color.Stone.`400`)
               .left(4),
             View.vertical(
@@ -81,15 +113,7 @@ object Main extends Component {
               }
             )
           )
-          .padding(0, 12, 12, 12)
-        //            .padding(top = 8)
       )
-      .width(600)
-      //        .blur(80)
-      .background(Color.Stone.`900`.withAlpha(0.95))
-      .border(1, "gray", 8)
-      .shadow(BoxShadow.lg)
-      .center
 
   private def row(
     isSelected: Boolean = false,

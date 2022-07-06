@@ -119,7 +119,7 @@ trait View { self =>
 
   def padding(x: Int, y: Int): View =
     modified(
-      L.padding(s"${x}px ${y}px")
+      L.padding(s"${y}px ${x}px")
     )
 
   def paddingH(px: Int): View =
@@ -171,6 +171,9 @@ trait View { self =>
       L.borderRadius(s"${px}px")
     )
 
+  def rounded: View =
+    rounded(8)
+
   def hover(isHover: Var[Boolean]): View =
     amended(
       L.onMouseEnter.mapToStrict(true) --> isHover,
@@ -221,6 +224,20 @@ trait View { self =>
       L.position.absolute
     )
 
+  def absolute(
+    top: Option[Int] = None,
+    right: Option[Int] = None,
+    bottom: Option[Int] = None,
+    left: Option[Int] = None
+  ): View =
+    amended(
+      L.position.absolute,
+      top.map(top => L.top(s"${top}px")),
+      right.map(right => L.right(s"${right}px")),
+      bottom.map(bottom => L.bottom(s"${bottom}px")),
+      left.map(left => L.left(s"${left}px"))
+    )
+
   def relative: View =
     modified(
       L.position.relative
@@ -229,6 +246,11 @@ trait View { self =>
   def shadow(shadow: BoxShadow): View =
     modified(
       L.boxShadow(shadow.css)
+    )
+
+  def fontMono: View =
+    amended(
+      cls("font-mono")
     )
 
   private def modified(mod: Mod[HtmlElement]*): View =
