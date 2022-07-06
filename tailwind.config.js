@@ -15,10 +15,6 @@ module.exports = {
             fontFamily: {
                 serif: ['Inter', 'ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
             },
-            colors: {
-                gray: colors.stone,
-                orange: colors.orange,
-            },
         },
     },
     variants: {

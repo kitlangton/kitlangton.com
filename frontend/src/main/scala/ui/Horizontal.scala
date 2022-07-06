@@ -76,7 +76,8 @@ final case class ZStack(views: List[View], alignment: Alignment = Alignment.cent
       views.map { view =>
         div(
           cls(s"flex ${alignment.css} h-full"),
-          view,
+          pointerEvents.none,
+          div(view.amend(pointerEvents.auto)),
           L.customStyle("grid-area")(s"1/1/1/1")
         )
       }

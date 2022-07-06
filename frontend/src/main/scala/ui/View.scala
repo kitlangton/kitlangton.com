@@ -9,6 +9,23 @@ import org.scalajs.dom.html
 import scala.language.implicitConversions
 
 object View {
+  def separatorH(height: Int, color: Color): View =
+    View(
+      div(
+        L.height(s"${height}px"),
+        L.background(color.css),
+        cls("w-full")
+      )
+    )
+
+  def separatorV(width: Int, color: Color): View =
+    View(
+      div(
+        L.width(s"${width}px"),
+        L.background(color.css),
+        cls("h-full")
+      )
+    )
 
   def empty: View = View(span())
 
@@ -137,16 +154,56 @@ trait View { self =>
       L.padding <-- $px.map(px => s"${px}px")
     )
 
-  def border(px: Int, color: String, radius: Int = 8): View =
+  def border(px: Int, color: String, radius: Int): View =
     modified(
       L.overflow.hidden,
-      L.border(s"${px}px solid ${color}"),
+      L.border(s"${px}px solid $color"),
       L.borderRadius(s"${radius}px")
+    )
+
+  def border(top: Int, right: Int, bottom: Int, left: Int, color: String, radius: Int): View =
+    modified(
+      L.overflow.hidden,
+      L.borderTop(s"${top}px solid $color"),
+      L.borderRight(s"${right}px solid $color"),
+      L.borderBottom(s"${bottom}px solid $color"),
+      L.borderLeft(s"${left}px solid $color"),
+      L.borderRadius(s"${radius}px")
+    )
+
+  def borderLeft(i: Int, color: Color): View =
+    amended(
+      L.borderLeft(s"${i}px solid ${color.css}")
+    )
+
+  def borderRight(i: Int, color: Color): View =
+    amended(
+      L.borderRight(s"${i}px solid ${color.css}")
+    )
+
+  def borderTop(i: Int, color: Color): View =
+    amended(
+      L.borderTop(s"${i}px solid ${color.css}")
+    )
+
+  def borderBottom(i: Int, color: Color): View =
+    amended(
+      L.borderBottom(s"${i}px solid ${color.css}")
     )
 
   def width(px: Int): View =
     modified(
       L.width(s"${px}px")
+    )
+
+  def height(px: Int): View =
+    modified(
+      L.height(s"${px}px")
+    )
+
+  def height(px: Signal[Double]): View =
+    modified(
+      L.height <-- px.px
     )
 
   def color(str: String): View =
@@ -248,9 +305,32 @@ trait View { self =>
       L.boxShadow(shadow.css)
     )
 
+  def shadow: View =
+    shadow(BoxShadow.md)
+
   def fontMono: View =
     amended(
       cls("font-mono")
+    )
+
+  def opacity(d: Double): View =
+    amended(
+      L.opacity(d)
+    )
+
+  def zIndex(level: Int): View =
+    amended(
+      L.zIndex(level)
+    )
+
+  def stroke(color: Color): View =
+    amended(
+      L.customStyle("stroke")(color.css)
+    )
+
+  def fill(color: Color): View =
+    amended(
+      L.customStyle("fill")(color.css)
     )
 
   private def modified(mod: Mod[HtmlElement]*): View =

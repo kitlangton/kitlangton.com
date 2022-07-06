@@ -4,6 +4,7 @@ import animus._
 import com.raquo.laminar.api.L
 import com.raquo.laminar.api.L._
 import components.Component
+import zio.start.Icons
 
 import scala.language.implicitConversions
 import scala.util.Random
@@ -15,17 +16,115 @@ object Main extends Component {
       override def body: HtmlElement = htmlElement
     }
 
-  val randomPadding: Signal[Int] =
+  val randomPadding: Signal[Double] =
     EventStream
       .periodic(1000)
       .map(_ => Random.nextInt(8) + 1)
       .startWith(3)
+      .map(_.toDouble)
 
   def body: HtmlElement =
     div(
-      cls("h-screen bg-gray-900 text-gray-100"),
-      Raycast
+      cls("h-screen bg-stone-900 text-stone-100"),
+      Ecosystem.center
+//      Typefully.center
+//      Raycast
     )
+
+  def Ecosystem =
+    View
+      .vertical(
+        Library(true, "zio-cache"),
+        Library(false, "zio-ampq"),
+        Details,
+        Library(true, "caliban"),
+        Library(true, "sttp"),
+        Library(false, "zio-query"),
+        Library(false, "zio-app")
+      )
+      .border(1, 1, 0, 1, Color.Stone.`700`.css, 8)
+      .borderTop(1, Color.Stone.`600`)
+      .width(600)
+      .shadow(BoxShadow.lg)
+
+  def Details =
+    View
+      .vertical(
+        "Depends On".medium.fontSize(FontSize.sm),
+        View
+          .vertical(
+            Dependency("zio-streams"),
+            Dependency("zio-test"),
+            Dependency("zio-interop-reactive-streams")
+          )
+          .left(4)
+      )
+      .padding(12)
+//      .height(0)
+//      .height(randomPadding.spring)
+      .border(0, 0, 1, 0, Color.Stone.`600`.css, 0)
+
+  private def Dependency(name: String): View =
+    name.color(Color.Stone.`300`)
+
+  private def Library(updated: Boolean, name: String) = {
+    val iconView =
+      if (updated)
+        View(Icons.checkmark).stroke(Color.Green.`500`)
+      else
+        View(Icons.exclamationSolid).fill(Color.Amber.`500`)
+    View
+      .horizontal(8)(
+        iconView,
+        View.text(name).medium
+      )
+      .padding(8)
+      .background(Color.Stone.`800`)
+      .border(0, 0, 1, 0, Color.Stone.`700`.css, 0)
+  }
+
+  def Typefully =
+    View
+      .vertical(12)(
+        View
+          .horizontal(8)(
+            "Tomorrow".medium,
+            "July 7".opacity(0.5)
+          )
+          .fontSize(FontSize.sm)
+          .padding(left = 8),
+        Toot,
+        OnlyTimeToot,
+        OnlyTimeToot,
+        Toot,
+        Toot,
+        OnlyTimeToot
+      )
+      .width(500)
+
+  private def Toot =
+    View
+      .horizontal(
+        View.vertical(4)(
+          "5:00 pm"
+            .color(Color.Zinc.`500`),
+          "My zettelkasten is fallow!"
+            .color(Color.Zinc.`200`)
+            .paddingV(4)
+        )
+      )
+      .padding(16, 12)
+//      .borderLeft(3, Color.Slate.`600`)
+      .background(Color.Zinc.`900`)
+      .border(1, Color.Slate.`600`.css, 8)
+      .fontSize(FontSize.sm)
+
+  def OnlyTimeToot =
+    "5:00 pm"
+      .color(Color.Zinc.`500`)
+      .padding(16, 12)
+      .border(1, Color.Slate.`600`.css, 8)
+      .fontSize(FontSize.sm)
 
   private def Raycast =
     View
@@ -42,21 +141,23 @@ object Main extends Component {
             "Search for apps and commands...".color(Color.Stone.`500`)
           )
           .padding(12),
-        wrap(div(cls("h-px w-full bg-gray-500"))),
+        View.separatorH(1, Color.Stone.`500`),
         View
-          .vertical(
-            CommandsAndSuggestion,
-            CommandMenu.absolute(bottom = Some(0), right = Some(0))
+          .stack(Alignment.bottomRight)(
+            CommandsAndSuggestion.width(550),
+            CommandMenu.zIndex(100).relative
+            //.absolute(bottom = Some(0), right = Some(0))
           )
-          .relative
+//          .relative
           .padding(12)
       )
-      .width(600)
       //        .blur(80)
       .background(Color.Stone.`900`.withAlpha(0.95))
       .border(1, "gray", 8)
       .shadow(BoxShadow.lg)
-      .center
+//      .width(600)
+      .centerH
+      .padding(top = 48)
 
   private def CommandMenu =
     View
@@ -65,9 +166,7 @@ object Main extends Component {
           .fontSize(FontSize.sm)
           .medium
           .padding(12, 3),
-        View(
-          div(L.height("30px"), L.width("1px"), cls("bg-gray-500"))
-        ),
+        View.separatorV(1, Color.Stone.`500`).height(30),
         ">_"
           .padding(12, 3)
           .fontMono
@@ -103,7 +202,7 @@ object Main extends Component {
               .color(Color.Stone.`400`)
               .left(4),
             View.vertical(
-              randomPadding.map { total =>
+              randomPadding.map(_.toInt).map { total =>
                 List.tabulate(total)(n =>
                   row(false, s"Command ${n + 1}", "Floating Notes")
                     .id(s"command-$n")
