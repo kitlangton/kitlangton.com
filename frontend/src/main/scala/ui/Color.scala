@@ -1,6 +1,6 @@
 package ui
 
-import animus.{Animatable, Spring}
+import animus.{Animatable, DeriveAnimatable, Spring}
 
 final case class Color(
   red: Double = 0.0,
@@ -230,31 +230,5 @@ object Color {
   }
 
   implicit val animatable: Animatable[Color] =
-    new Animatable[Color] {
-      val da: Animatable[Double] { type Anim = Spring } =
-        Animatable.animatableDouble.asInstanceOf[Animatable[Double] { type Anim = Spring }]
-
-      override type Anim = (da.Anim, da.Anim, da.Anim, da.Anim)
-
-      override def toAnim(value: Color): (da.Anim, da.Anim, da.Anim, da.Anim) =
-        (da.toAnim(value.red), da.toAnim(value.green), da.toAnim(value.blue), da.toAnim(value.alpha))
-
-      override def fromAnim(anim: (da.Anim, da.Anim, da.Anim, da.Anim)): Color =
-        Color(anim._1.position, anim._2.position, anim._3.position, anim._4.position)
-
-      override def tick(anim: (da.Anim, da.Anim, da.Anim, da.Anim), time: Double): Boolean = {
-        val a = da.tick(anim._1, time)
-        val b = da.tick(anim._2, time)
-        val c = da.tick(anim._3, time)
-        val d = da.tick(anim._4, time)
-        a && b && c && d
-      }
-
-      override def update(anim: (da.Anim, da.Anim, da.Anim, da.Anim), newValue: Color): Unit = {
-        da.update(anim._1, newValue.red)
-        da.update(anim._2, newValue.green)
-        da.update(anim._3, newValue.blue)
-        da.update(anim._4, newValue.alpha)
-      }
-    }
+    DeriveAnimatable.gen[Color]
 }

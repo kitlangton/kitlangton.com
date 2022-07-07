@@ -76,6 +76,26 @@ object View {
       .background(background)
       .border(1, border.css, 8)
 
+  def rect(width: Int = 0, height: Int = 0): View =
+    View(
+      div(
+        L.width(s"${width}px"),
+        L.height(s"${height}px")
+      )
+    )
+
+  def circle(diameter: Int): View =
+    View(
+      div(
+        L.width(s"${diameter}px"),
+        L.height(s"${diameter}px"),
+        L.borderRadius(s"${diameter}px")
+      )
+    )
+
+  def width(px: Int) =
+    View(div(L.width(s"${px}px")))
+
   implicit def viewToComponent(view: View): HtmlElement =
     view.body
 }
@@ -147,6 +167,12 @@ trait View { self =>
   def margin(px: Int): View =
     modified(
       L.margin(s"${px}px")
+    )
+
+  def marginH(px: Int): View =
+    amended(
+      L.marginRight(s"${px}px"),
+      L.marginLeft(s"${px}px")
     )
 
   def padding(px: Int): View =
@@ -242,6 +268,16 @@ trait View { self =>
       L.height <-- px.px
     )
 
+  def minHeight(spring: Signal[Double]) =
+    modified(
+      L.minHeight <-- spring.px
+    )
+
+  def maxHeight(spring: Signal[Double]) =
+    modified(
+      L.maxHeight <-- spring.px
+    )
+
   def color(str: String): View =
     modified(
       L.color(str)
@@ -250,6 +286,28 @@ trait View { self =>
   def color(color: Color): View =
     amended(
       L.color(color.css)
+    )
+
+  def colorHover(color0: Color): View =
+    View {
+      val hovering = new EventBus[Boolean]
+
+      val css    = color0.css
+      val $color = hovering.events.map(if (_) css else "inherit")
+
+      self.modified(
+        L.color <-- $color,
+        L.onMouseEnter.mapTo(true) --> hovering,
+        L.onMouseLeave.mapTo(false) --> hovering
+      )
+    }
+
+  def cursorPointer: View =
+    amended(L.cursor.pointer)
+
+  def onClick(expr: => Unit): View =
+    amended(
+      L.onClick --> { _ => expr }
     )
 
   def blur(px: Int = 12) =
@@ -396,8 +454,18 @@ trait View { self =>
   def selfCenter: View =
     amended(L.alignSelf.center)
 
+  def selfStretch: View =
+    amended(L.alignSelf.stretch)
+
   //  def flex: View =
 //    modified(L.display.flex)
+
+  def intrinsicHeight(heightVar: Var[Double]): View =
+    modified(
+      L.onMountCallback { el =>
+        heightVar.set(el.thisNode.ref.getBoundingClientRect().height)
+      }
+    )
 
   private def modified(mod: Mod[HtmlElement]*): View =
     new View {
