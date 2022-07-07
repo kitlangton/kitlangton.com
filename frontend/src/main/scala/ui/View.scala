@@ -55,8 +55,8 @@ object View {
   def vertical(views: Signal[List[View]]): View =
     VerticalSignal(views)
 
-  def vertical(spacing: Int)(views: View*): View =
-    Vertical(views.toList, spacing)
+  def vertical(spacing: Int, alignment: HorizontalAlignment = HorizontalAlignment.Left)(views: View*): View =
+    Vertical(views.toList, spacing, alignment)
 
   def stack(views: View*): View =
     ZStack(views.toList)
@@ -201,6 +201,16 @@ trait View { self =>
       L.height(s"${px}px")
     )
 
+  def heightFull =
+    amended(
+      L.height("100%")
+    )
+
+  def widthFull =
+    modified(
+      L.width("100%")
+    )
+
   def height(px: Signal[Double]): View =
     modified(
       L.height <-- px.px
@@ -296,42 +306,57 @@ trait View { self =>
     )
 
   def relative: View =
-    modified(
-      L.position.relative
-    )
+    modified(L.position.relative)
 
   def shadow(shadow: BoxShadow): View =
-    modified(
-      L.boxShadow(shadow.css)
-    )
+    modified(L.boxShadow(shadow.css))
 
   def shadow: View =
     shadow(BoxShadow.md)
 
   def fontMono: View =
-    amended(
-      cls("font-mono")
-    )
+    amended(cls("font-mono"))
 
   def opacity(d: Double): View =
-    amended(
-      L.opacity(d)
-    )
+    amended(L.opacity(d))
 
   def zIndex(level: Int): View =
-    amended(
-      L.zIndex(level)
-    )
+    amended(L.zIndex(level))
 
   def stroke(color: Color): View =
-    amended(
-      L.customStyle("stroke")(color.css)
-    )
+    amended(L.customStyle("stroke")(color.css))
 
   def fill(color: Color): View =
-    amended(
-      L.customStyle("fill")(color.css)
-    )
+    amended(L.customStyle("fill")(color.css))
+
+  def textCenter =
+    amended(L.textAlign.center)
+
+  def textRight =
+    amended(L.textAlign.right)
+
+  def textLeft =
+    amended(L.textAlign.left)
+
+  def textJustify =
+    amended(L.textAlign.justify)
+
+  def lineHeight(px: Int): View =
+    amended(L.lineHeight(s"${px}px"))
+
+  // # Alignment
+
+  def selfStart: View =
+    amended(L.alignSelf.flexStart)
+
+  def selfEnd: View =
+    amended(L.alignSelf.flexEnd)
+
+  def selfCenter: View =
+    amended(L.alignSelf.center)
+
+  //  def flex: View =
+//    modified(L.display.flex)
 
   private def modified(mod: Mod[HtmlElement]*): View =
     new View {

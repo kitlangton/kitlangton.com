@@ -34,12 +34,16 @@ final case class HorizontalSignal($views: Signal[List[View]], spacing: Int = 0) 
     )
 }
 
-final case class Vertical(views: List[View], spacing: Int = 0) extends View {
+final case class Vertical(
+  views: List[View],
+  spacing: Int = 0,
+  alignment: HorizontalAlignment = HorizontalAlignment.Left
+) extends View {
   val size: Int = views.size
 
   def body: HtmlElement =
     div(
-      cls("flex flex-col"),
+      cls(s"flex flex-col"), //  ${alignment.toVertical.css}"),
       views.zipWithIndex.map { case (view, idx) =>
         view.amend(
           Option.when(idx < size - 1)(marginBottom(s"${spacing}px"))
@@ -98,6 +102,13 @@ sealed trait VerticalAlignment extends Product with Serializable { self =>
       case VerticalAlignment.Middle => "items-center"
       case VerticalAlignment.Bottom => "items-end"
     }
+
+  def toHorizontal =
+    self match {
+      case VerticalAlignment.Top    => HorizontalAlignment.Left
+      case VerticalAlignment.Middle => HorizontalAlignment.Center
+      case VerticalAlignment.Bottom => HorizontalAlignment.Right
+    }
 }
 
 sealed trait HorizontalAlignment extends Product with Serializable { self =>
@@ -106,6 +117,13 @@ sealed trait HorizontalAlignment extends Product with Serializable { self =>
       case HorizontalAlignment.Left   => "justify-start"
       case HorizontalAlignment.Center => "justify-center"
       case HorizontalAlignment.Right  => "justify-end"
+    }
+
+  def toVertical =
+    self match {
+      case HorizontalAlignment.Left   => VerticalAlignment.Top
+      case HorizontalAlignment.Center => VerticalAlignment.Middle
+      case HorizontalAlignment.Right  => VerticalAlignment.Bottom
     }
 }
 
