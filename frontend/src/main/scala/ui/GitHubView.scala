@@ -1,14 +1,21 @@
 package ui
 
-import components.Component
-import com.raquo.laminar.api.L._
 import animus._
-import com.raquo.laminar.api.L
+import com.raquo.laminar.api.L._
 import zio.start.Icons
 
 object GitHubView extends View {
 
   override def body: HtmlElement =
+    View
+      .vertical(8)(
+        ProjectCard,
+        ProjectCard,
+        ProjectCard,
+        ProjectCard
+      )
+
+  private def ProjectCard =
     View
       .box(
         View.horizontal(
@@ -70,8 +77,8 @@ object GitHubView extends View {
               "68"
             ),
           "1 issue needs help",
-          s"Updated Jul 4"
-//          intrinsicHeight.map(_.toString)
+          s"Updated Jul 4",
+          intrinsicHeight.signal.map(_.toString)
         )
         .fontXSmall
         .intrinsicHeight(intrinsicHeight)

@@ -254,7 +254,7 @@ trait View { self =>
     )
 
   def heightFull =
-    amended(
+    modified(
       L.height("100%")
     )
 
@@ -466,6 +466,9 @@ trait View { self =>
         heightVar.set(el.thisNode.ref.getBoundingClientRect().height)
       }
     )
+
+  def overflowYScroll =
+    modified(L.overflowY.scroll)
 
   private def modified(mod: Mod[HtmlElement]*): View =
     new View {
