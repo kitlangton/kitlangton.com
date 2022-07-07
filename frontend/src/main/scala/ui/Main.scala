@@ -26,7 +26,10 @@ object Main extends Component {
   def body: HtmlElement =
     div(
       cls("h-screen bg-stone-900 text-stone-100"),
-      Egghead()
+      GitHubView
+//      Calendar
+//      Taxes
+//      Egghead()
 //      Ecosystem.center
 //      Typefully.center
 //      Raycast

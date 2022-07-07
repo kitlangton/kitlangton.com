@@ -9,6 +9,7 @@ import org.scalajs.dom.html
 import scala.language.implicitConversions
 
 object View {
+
   def separatorH(height: Int, color: Color): View =
     View(
       div(
@@ -64,6 +65,17 @@ object View {
   def stack(alignment: Alignment)(views: View*): View =
     ZStack(views.toList, alignment)
 
+  def box(
+    content: View,
+    padding: Int,
+    background: Color,
+    border: Color
+  ) =
+    content
+      .padding(padding)
+      .background(background)
+      .border(1, border.css, 8)
+
   implicit def viewToComponent(view: View): HtmlElement =
     view.body
 }
@@ -85,7 +97,7 @@ trait View { self =>
     )
 
   def background(color: Color): View =
-    modified(
+    amended(
       L.backgroundColor(color.css)
     )
 
@@ -121,6 +133,20 @@ trait View { self =>
       alignItems.center,
       L.width("100%"),
       L.height("100%")
+    )
+
+  def left: View =
+    modified(
+      display.flex,
+      L.width("100%"),
+      L.height("100%"),
+      justifyContent.flexStart,
+      alignItems.center
+    )
+
+  def margin(px: Int): View =
+    modified(
+      L.margin(s"${px}px")
     )
 
   def padding(px: Int): View =
@@ -222,7 +248,7 @@ trait View { self =>
     )
 
   def color(color: Color): View =
-    modified(
+    amended(
       L.color(color.css)
     )
 
@@ -251,6 +277,21 @@ trait View { self =>
     amended(
       L.fontSize(size.size)
     )
+
+  def fontSmall: View =
+    fontSize(FontSize.sm)
+
+  def fontXSmall: View =
+    fontSize(FontSize.xs)
+
+  def fontMedium: View =
+    fontSize(FontSize.base)
+
+  def fontLarge: View =
+    fontSize(FontSize.lg)
+
+  def fontXLarge: View =
+    fontSize(FontSize.xl)
 
   def bold: View =
     amended(

@@ -240,7 +240,7 @@ object Color {
         (da.toAnim(value.red), da.toAnim(value.green), da.toAnim(value.blue), da.toAnim(value.alpha))
 
       override def fromAnim(anim: (da.Anim, da.Anim, da.Anim, da.Anim)): Color =
-        Color(anim._1.value, anim._2.value, anim._3.value, anim._4.value)
+        Color(anim._1.position, anim._2.position, anim._3.position, anim._4.position)
 
       override def tick(anim: (da.Anim, da.Anim, da.Anim, da.Anim), time: Double): Boolean = {
         val a = da.tick(anim._1, time)

@@ -2,7 +2,7 @@ name        := "kitlangton.com"
 description := "Kit's website"
 version     := "0.0.1"
 
-val animusVersion    = "0.1.15"
+val animusVersion    = "0.2.0"
 val boopickleVersion = "1.4.0"
 val laminarVersion   = "0.14.0"
 val laminextVersion  = "0.13.6"
