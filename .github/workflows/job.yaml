@@ -1,0 +1,19 @@
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+
+jobs:
+
+  youtube-download:
+    name: youtube download
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+#      - uses: coursier/cache-action@v6
+      - uses: olafurpg/setup-scala@v13
+      - name: download youtube video data
+        run: |
+          sbt 'backend/run'
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4.0.4
