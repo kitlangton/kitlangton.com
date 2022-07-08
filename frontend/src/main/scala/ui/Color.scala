@@ -71,6 +71,7 @@ object Color {
     val `700`: Color = Color.fromHex("#374151")
     val `800`: Color = Color.fromHex("#1f2937")
     val `900`: Color = Color.fromHex("#111827")
+    val `950`: Color = Color.fromHex("#0f1523")
   }
 
   object Zinc {

@@ -69,12 +69,14 @@ object View {
     content: View,
     padding: Int,
     background: Color,
-    border: Color
+    border: Color,
+    radius: Int = 8
   ) =
     content
       .padding(padding)
+      .heightFull
       .background(background)
-      .border(1, border.css, 8)
+      .border(1, border.css, radius)
 
   def rect(width: Int = 0, height: Int = 0): View =
     View(
@@ -96,6 +98,16 @@ object View {
   def width(px: Int) =
     View(div(L.width(s"${px}px")))
 
+  def grid(cols: Int, gap: Int = 0)(views: View*): View =
+    View(
+      div(
+        cls("grid"),
+        views.toList,
+        L.customStyle("grid-template-columns")(s"repeat($cols, minmax(0,1fr))"),
+        L.customStyle("grid-gap")(s"${gap}px")
+      )
+    )
+
   implicit def viewToComponent(view: View): HtmlElement =
     view.body
 }
@@ -112,7 +124,7 @@ trait View { self =>
   def body: HtmlElement
 
   def background(color: String): View =
-    modified(
+    amended(
       L.backgroundColor(color)
     )
 
@@ -201,6 +213,11 @@ trait View { self =>
       L.padding(s"${px}px 0")
     )
 
+  def paddingTop(px: Int): View =
+    modified(
+      L.paddingTop(s"${px}px")
+    )
+
   def padding($px: Signal[Double]): View =
     modified(
       L.padding <-- $px.map(px => s"${px}px")
@@ -254,7 +271,7 @@ trait View { self =>
     )
 
   def heightFull =
-    modified(
+    amended(
       L.height("100%")
     )
 
@@ -351,10 +368,11 @@ trait View { self =>
   def fontXLarge: View =
     fontSize(FontSize.xl)
 
+  def whitespaceNoWrap: View =
+    amended(L.whiteSpace.nowrap)
+
   def bold: View =
-    amended(
-      L.fontWeight.bold
-    )
+    amended(L.fontWeight.bold)
 
   def medium: View =
     amended(
@@ -460,6 +478,8 @@ trait View { self =>
   //  def flex: View =
 //    modified(L.display.flex)
 
+  def noShrink: View = amended(L.flexShrink(0))
+
   def intrinsicHeight(heightVar: Var[Double]): View =
     modified(
       L.onMountCallback { el =>
@@ -467,8 +487,28 @@ trait View { self =>
       }
     )
 
-  def overflowYScroll =
+  def overflowYScroll: View =
     modified(L.overflowY.scroll)
+
+  def overflowEllipsis: View =
+    amended(
+      L.whiteSpace.nowrap,
+      L.overflow.hidden,
+      L.textOverflow.ellipsis
+    )
+
+  def overflowEllipsis(maxLines: Int): View =
+    amended(
+      L.customStyle("-webkit-line-clamp")(maxLines.toString),
+      L.customStyle("line-clamp")(maxLines.toString),
+      L.customStyle("-webkit-box-orient")("vertical"),
+      L.customStyle("display")("-webkit-box"),
+      L.overflow.hidden,
+      L.textOverflow.ellipsis
+    )
+
+  def overflowHidden: View =
+    amended(L.overflow.hidden)
 
   private def modified(mod: Mod[HtmlElement]*): View =
     new View {

@@ -26,33 +26,38 @@ object Main extends Component {
   def body: HtmlElement =
     div(
       cls("h-screen bg-gray-900 text-gray-100"),
+      L.overflowY.scroll,
+      VideoSite
 //      div(
-      GitHubView.centerH.padding(24),
-      L.overflowY.scroll
+//      GitHubView.centerH.padding(24)
 //      )
 //      Calendar
 //      Taxes
-//      Egghead()
-//      Ecosystem.center
-//      Typefully.center
+//        Egghead ()
+//      Ecosystem
+//      Typefully.centerH //.center
 //      Raycast
     )
 
   def Ecosystem =
-    View
-      .vertical(
-        Library(true, "zio-cache"),
-        Library(false, "zio-ampq"),
-        Details,
-        Library(true, "caliban"),
-        Library(true, "sttp"),
-        Library(false, "zio-query"),
-        Library(false, "zio-app")
-      )
-      .border(1, 1, 0, 1, Color.Stone.`700`.css, 8)
-      .borderTop(1, Color.Stone.`600`)
-      .width(600)
-      .shadow(BoxShadow.lg)
+    div(
+      cls("h-screen bg-stone-900 text-stone-100"),
+      View
+        .vertical(
+          Library(true, "zio-cache"),
+          Library(false, "zio-ampq"),
+          Details,
+          Library(true, "caliban"),
+          Library(true, "sttp"),
+          Library(false, "zio-query"),
+          Library(false, "zio-app")
+        )
+        .border(1, 1, 0, 1, Color.Stone.`700`.css, 8)
+        .borderTop(1, Color.Stone.`600`)
+        .width(600)
+        .shadow(BoxShadow.lg)
+        .center
+    )
 
   def Details =
     View
@@ -96,7 +101,7 @@ object Main extends Component {
         View
           .horizontal(8)(
             "Tomorrow".medium,
-            "July 7".opacity(0.5)
+            "July 7".color(Color.Gray.`500`)
           )
           .fontSize(FontSize.sm)
           .padding(left = 8),
@@ -108,63 +113,68 @@ object Main extends Component {
         OnlyTimeToot
       )
       .width(500)
+      .paddingV(44)
 
   private def Toot =
     View
       .horizontal(
         View.vertical(4)(
           "5:00 pm"
-            .color(Color.Zinc.`500`),
+            .color(Color.Gray.`500`),
           "My zettelkasten is fallow!"
-            .color(Color.Zinc.`200`)
+            .color(Color.Gray.`200`)
             .paddingV(4)
         )
       )
       .padding(16, 12)
 //      .borderLeft(3, Color.Slate.`600`)
-      .background(Color.Zinc.`900`)
+      .background(Color.Gray.`950`)
       .border(1, Color.Slate.`600`.css, 8)
       .fontSize(FontSize.sm)
 
   def OnlyTimeToot =
     "5:00 pm"
-      .color(Color.Zinc.`500`)
+      .color(Color.Gray.`500`)
       .padding(16, 12)
       .border(1, Color.Slate.`600`.css, 8)
       .fontSize(FontSize.sm)
 
   private def Raycast =
-    View
-      .vertical(
-        View
-          .horizontal(
-            View(
-              div(
-                height("18px"),
-                width("1px"),
-                backgroundColor(Color.Stone.`200`.css)
-              )
-            ),
-            "Search for apps and commands...".color(Color.Stone.`500`)
-          )
-          .padding(12),
-        View.separatorH(1, Color.Stone.`500`),
-        View
-          .stack(Alignment.bottomRight)(
-            CommandsAndSuggestion.width(550),
-            CommandMenu.zIndex(100).relative
-            //.absolute(bottom = Some(0), right = Some(0))
-          )
+    div(
+      cls("h-screen bg-zinc-900 text-zinc-100"),
+      L.overflowY.scroll,
+      View
+        .vertical(
+          View
+            .horizontal(
+              View(
+                div(
+                  height("18px"),
+                  width("1px"),
+                  backgroundColor(Color.Stone.`200`.css)
+                )
+              ),
+              "Search for apps and commands...".color(Color.Stone.`500`)
+            )
+            .padding(12),
+          View.separatorH(1, Color.Stone.`500`),
+          View
+            .stack(Alignment.bottomRight)(
+              CommandsAndSuggestion.width(550),
+              CommandMenu.zIndex(100).relative
+              //.absolute(bottom = Some(0), right = Some(0))
+            )
 //          .relative
-          .padding(12)
-      )
-      //        .blur(80)
-      .background(Color.Stone.`900`.withAlpha(0.95))
-      .border(1, "gray", 8)
-      .shadow(BoxShadow.lg)
+            .padding(12)
+        )
+        //        .blur(80)
+        .background(Color.Stone.`900`.withAlpha(0.95))
+        .border(1, "gray", 8)
+        .shadow(BoxShadow.lg)
 //      .width(600)
-      .centerH
-      .padding(top = 48)
+        .centerH
+        .padding(top = 48)
+    )
 
   private def CommandMenu =
     View
@@ -243,8 +253,8 @@ object Main extends Component {
         View.spacer,
         "Command".color(Color.Stone.`400`)
       )
-      .hover(isHover)
       .padding(8)
+      .hover(isHover)
       .background {
         isHover.signal.map { hover =>
           if (isSelected) Color.Stone.`700`

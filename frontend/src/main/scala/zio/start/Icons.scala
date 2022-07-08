@@ -104,6 +104,38 @@ object Icons {
       }
     )
 
+  def academicCap =
+    div(
+      onMountCallback { el =>
+        el.thisNode.ref.innerHTML = """
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+  <path d="M12 14l9-5-9-5-9 5 9 5z" />
+  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+<path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+</svg>      """
+      }
+    )
+
+  def video =
+    div(
+      onMountCallback { el =>
+        el.thisNode.ref.innerHTML = """
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+</svg>  """
+      }
+    )
+
+  def videoFill =
+    div(
+      onMountCallback { el =>
+        el.thisNode.ref.innerHTML = """
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" >
+  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+</svg>"""
+      }
+    )
+
   def checkmark =
     div(
       onMountCallback { el =>
