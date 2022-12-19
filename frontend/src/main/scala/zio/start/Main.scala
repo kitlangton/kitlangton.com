@@ -20,7 +20,7 @@ object Main {
       val appContainer = dom.document.querySelector("#app")
       appContainer.innerHTML = ""
       unmount()
-      val rootNode = render(appContainer, ui.Main.body)
+      val rootNode = render(appContainer, Home.body)
       storeUnmount(rootNode)
     }
 

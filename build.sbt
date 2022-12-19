@@ -2,26 +2,26 @@ name        := "kitlangton.com"
 description := "Kit's website"
 version     := "0.0.1"
 
-val zioVersion       = "2.0.0"
-val animusVersion    = "0.2.0"
+val zioVersion       = "2.0.5"
+val animusVersion    = "0.2.2"
 val boopickleVersion = "1.4.0"
 val laminarVersion   = "0.14.0"
 val laminextVersion  = "0.13.6"
 val quillZioVersion  = "3.10.0"
-val scalaMetaVersion = "4.5.9"
+val scalaMetaVersion = "4.7.0"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val sharedSettings = Seq(
-  addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.2" cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
+//  addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.2" cross CrossVersion.full),
+//  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
   libraryDependencies ++= Seq(
     "io.suzaku" %%% "boopickle" % boopickleVersion
   ),
   scalacOptions ++= Seq("-Ymacro-annotations", "-deprecation", "-feature"),
   // remove fatal warnings if not in CI
   scalacOptions ++= (if (sys.env.contains("CI")) Seq("-Xfatal-warnings") else Seq()),
-  scalaVersion   := "2.13.8",
+  scalaVersion   := "3.2.1",
   testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
 )
 
@@ -42,10 +42,10 @@ lazy val frontend = project
     libraryDependencies ++= Seq(
       "io.github.kitlangton" %%% "animus"          % animusVersion,
       "com.raquo"            %%% "laminar"         % laminarVersion,
-      "io.github.cquiroz"    %%% "scala-java-time" % "2.4.0",
+      "io.github.cquiroz"    %%% "scala-java-time" % "2.5.0",
       "io.laminext"          %%% "websocket"       % laminextVersion,
-      "com.raquo"            %%% "waypoint"        % "0.5.0",
-      "org.scalameta"        %%% "scalameta"       % scalaMetaVersion
+      "com.raquo"            %%% "waypoint"        % "0.5.0"
+//      "org.scalameta"        %%% "scalameta"       % scalaMetaVersion
     )
   )
   .settings(sharedSettings)
@@ -60,7 +60,7 @@ lazy val backend =
         "dev.zio"        %% "zio"                         % zioVersion,
         "dev.zio"        %% "zio-test"                    % zioVersion % Test,
         "dev.zio"        %% "zio-test-sbt"                % zioVersion % Test,
-        "dev.zio"        %% "zio-json"                    % "0.3.0-RC10",
+        "dev.zio"        %% "zio-json"                    % "0.4.2",
         "com.google.apis" % "google-api-services-youtube" % "v3-rev20220612-1.32.1"
       )
     )

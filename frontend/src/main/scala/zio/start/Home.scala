@@ -17,7 +17,8 @@ object Home extends Component {
           div(
             WhomstSection,
             LinksSection,
-            OtherSection
+            TalksSection
+//            OtherSection
           ),
           OpenSourceSection
         )
@@ -48,10 +49,9 @@ object Home extends Component {
     div(
       Header("Open Source Projects"),
       Project(
-        "ZIO Start",
-        "A web-based wizard for generating new ZIO applications.",
-        "https://zio-start.surge.sh",
-        List("NEW!")
+        "ZIO Magic",
+        "Friendly, compile-time dependency injection for ZIO. Integrated into ZIO 2.",
+        "https://github.com/kitlangton/zio-magic"
       ),
       Project(
         "Scala Update",
@@ -70,9 +70,30 @@ object Home extends Component {
         "https://github.com/kitlangton/parallel-for"
       ),
       Project(
-        "ZIO Magic",
-        "Friendly, compile-time dependency injection for ZIO. Integrated into ZIO 2.",
-        "https://github.com/kitlangton/zio-magic"
+        "ZIO Start",
+        "A web-based wizard for generating new ZIO applications.",
+        "https://zio-start.surge.sh",
+        List("NEW!")
+      )
+    )
+
+  private def TalksSection =
+    div(
+      Header("Talks"),
+      Project(
+        "ZIO App Architecture",
+        "Idiomatic Scala application architecture with ZIO 2.",
+        "https://youtu.be/yXcqjQ7Kcwk"
+      ),
+      Project(
+        "Stockholm Syndrome Escape Velocity",
+        "A vision of a full-stack Scala future.",
+        "https://youtu.be/kLZr87CGY-U"
+      ),
+      Project(
+        "Free Structures and Effect Systems",
+        "Implementing a functional effects systems by way of self-lobotomy.",
+        "https://youtu.be/MSygEhqdsqs"
       )
     )
 
@@ -99,16 +120,6 @@ object Home extends Component {
           em("Greetings!"),
           " My name is Kit. I am a programmer, teacher, and designer ",
           span("[sic]", cls("text-gray-400")),
-          "."
-        ),
-        div(
-          cls("mt-4"),
-          "I mostly write Scala at ",
-          link("Ziverge", "https://ziverge.com"),
-          ", where we're trying to build ",
-          em("The Future of Functional Programming"),
-          " with ",
-          link("ZIO", "https://zio.dev"),
           "."
         ),
         div(
@@ -148,13 +159,13 @@ object Home extends Component {
 
 final case class HorizontalRule() extends Component {
   def body =
-    div(cls("h-px bg-gray-800 w-full"))
+    div(cls("h-px bg-stone-800 w-full"))
 }
 
 final case class SolidBar() extends Component {
   def body =
     div(
-      cls("h-4 w-full bg-gray-800")
+      cls("h-4 w-full bg-stone-800")
     )
 }
 
@@ -212,7 +223,7 @@ case class Project( //
             cls("flex items-center"),
             labels.map { label =>
               div(
-                cls("ml-2 p-0.5 px-1 text-xs bg-gray-800 text-gray-400 rounded-sm font-normal"),
+                cls("ml-2 p-0.5 px-1 text-xs bg-stone-800 text-gray-400 rounded-sm font-normal"),
                 label
               )
             }

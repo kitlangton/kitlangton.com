@@ -1,6 +1,6 @@
 package ui
 
-import animus.{Animatable, DeriveAnimatable, Spring}
+//import animus.{Animatable, DeriveAnimatable, Spring}
 
 final case class Color(
   red: Double = 0.0,
@@ -230,6 +230,6 @@ object Color {
     val `900`: Color = Color.fromHex("#064e3b")
   }
 
-  implicit val animatable: Animatable[Color] =
-    DeriveAnimatable.gen[Color]
+//  implicit val animatable: Animatable[Color] =
+//    DeriveAnimatable.gen[Color]
 }
